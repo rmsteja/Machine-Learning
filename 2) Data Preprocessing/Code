@@ -1,0 +1,43 @@
+'''
+1) Importing Libraries
+'''
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+'''
+2)Here we extracted data into data varible and gave input(Independent) Parameters to x and output(Dependent) variable to y 
+'''
+
+data=pd.read_csv('Data.csv')
+x=data.iloc[:,:-1].values
+y=data.iloc[:,-1].values
+
+'''
+3) In our data we have few null values in Age and Salary. It should be filled with mean values of the column.  
+'''
+from sklearn.impute import SimpleImputer
+imputer=SimpleImputer(missing_values=np.nan,strategy='mean')
+imputer.fit(x[:,1:])
+x[:,1:]=imputer.transform(x[:,1:])
+
+'''
+4) For desigining a model it's necessary that all independent paramenters should be INT data type. Due to this we need to encode Country coulmn
+'''
+from sklearn.compose import ColumnTransformer
+from sklearn.preprocessing import OneHotEncoder 
+ct=ColumnTransformer(transformers=[('encode',OneHotEncoder(),[0])],remainder='passthrough')
+x=ct.fit_transform(x)
+
+'''
+5)# It's also mandatory to change our dependent varible to INT data type if it's in variable data type
+# As y has YES or NO we can encode YES as 1 and NO as 0
+'''
+from sklearn.preprocessing import LabelEncoder
+le=LabelEncoder()
+y=le.fit_transform(y)
+
+'''
+6)Final Output
+'''
+Print(x)
+print(y)
