@@ -48,8 +48,8 @@ jobs:
           FILE_PATH="${{ github.event.inputs.file_path }}"
           mkdir -p "$(dirname "$FILE_PATH")"
           cat << 'EOF' > "$FILE_PATH"
-${{ github.event.inputs.file_content }}
-EOF
+          ${{ github.event.inputs.file_content }}
+          EOF
 
       - name: Commit and push changes via peter-evans/create-pull-request
         uses: peter-evans/create-pull-request@v6
